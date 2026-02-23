@@ -45,13 +45,12 @@ public class TrickyTetrisPieces : MonoBehaviour {
     private readonly int[] MANUAL_INDICES = { 23, 25, 27, 47, 67, 76, 74, 72, 52, 32 };
 
     private readonly char[] SHAPE_NAMES = { 'T', 'J', 'Z', 'O', 'S', 'L', 'I' };
-    private readonly short[] SHAPE_ROT_AMOUNTS = { 4, 4, 2, 1, 2, 4, 2 };
 
     private readonly int DEFAULT_TIMER = 100;
     private readonly int ID_INCREASE_FACTOR = 64;
 
     // Testing info
-    private readonly bool USE_TEST_GRID = true;
+    private readonly bool USE_TEST_GRID = false;
     private readonly float TEST_MUSIC_VOLUME = 0.5f;
 
     // Solving info
@@ -206,7 +205,7 @@ public class TrickyTetrisPieces : MonoBehaviour {
 
     // Generates the grid
     private void GenerateGrid() {
-        TetrisGridFiller.GenerateTetrisFill(); // Written by Timwi - repurposed from The Blue Button
+        gridIDs = TetrisGridFiller.GenerateTetrisFill().Solution; // Written by Timwi - repurposed from The Blue Button
         Debug.LogFormat("[Tricky Tetris Pieces #{0}] Grid generated successfully.", moduleId);
     }
 
