@@ -46,7 +46,7 @@ static class TetrisGridFiller
         {
             if (sofar[tCell.Index] != null)
                 continue;
-            var tPossiblePlacementIxs = possiblePlacements.SelectIndexWhere(pl => pl.Polyomino.Has((tCell.X - pl.Place.X + _gridWidth) % _gridWidth, (tCell.Y - pl.Place.Y + _gridHeight) % _gridHeight)).ToArray();
+            var tPossiblePlacementIxs = possiblePlacements.SelectIndexWhere(pl => pl.Polyomino.Has(tCell.X - pl.Place.X, tCell.Y - pl.Place.Y)).ToArray();
             if (tPossiblePlacementIxs.Length == 0)
                 yield break;
             if (bestPlacementIxs == null || tPossiblePlacementIxs.Length < bestPlacementIxs.Length)
@@ -69,16 +69,17 @@ static class TetrisGridFiller
 
         for (var i = bestPlacementIxs.Length - 1; i >= 0; i--)
         {
+            var removed = possiblePlacements[bestPlacementIxs[i]];
             var poly = possiblePlacements[bestPlacementIxs[i]].Polyomino;
             var place = possiblePlacements[bestPlacementIxs[i]].Place;
             possiblePlacements.RemoveAt(bestPlacementIxs[i]);
 
             foreach (var c in poly.Cells)
-                sofar[place.AddWrap(c).Index] = pieceIx;
+                sofar[place.Add(c).Index] = pieceIx;
             polysSofar.Add(new PolyominoPlacement(poly, place));
 
             var newPlacements = possiblePlacements
-                .Where(p => p.Polyomino.Cells.All(c => sofar[p.Place.AddWrap(c).Index] == null))
+                .Where(p => p.Polyomino.Cells.All(c => sofar[p.Place.Add(c).Index] == null))
                 .ToList();
 
             foreach (var solution in solvePolyominoPuzzle(sofar, pieceIx + 1, newPlacements, polysSofar))
@@ -86,7 +87,9 @@ static class TetrisGridFiller
 
             polysSofar.RemoveAt(polysSofar.Count - 1);
             foreach (var c in poly.Cells)
-                sofar[place.AddWrap(c).Index] = null;
+                sofar[place.Add(c).Index] = null;
+
+            possiblePlacements.Insert(bestPlacementIxs[i], removed);
         }
     }
 }
