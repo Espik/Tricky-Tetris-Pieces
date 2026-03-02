@@ -582,7 +582,7 @@ public class TrickyTetrisPieces : MonoBehaviour {
             moduleTimer--;
         }
 
-        if (moduleTimer == 0) {
+        if (canCountDown && moduleTimer == 0) {
             TimerText.text = "TIME- 00";
             Debug.LogFormat("[Tricky Tetris Pieces #{0}] You ran out of time! Strike!", moduleId);
             StartCoroutine(FailModule());
@@ -914,6 +914,10 @@ public class TrickyTetrisPieces : MonoBehaviour {
 
         return str;
     }
+
+
+    // Twitch Plays support - made by eXish
+
 
     // The help message given to Twitch Plays users
     private readonly string TwitchHelpMessage = @"!{0} press C12 [Presses the tile at coordinate C12] | !{0} press D19 45 [Presses the tile at coordinate D19 when the module's timer is 45] | !{0} switch [Presses the switch] | !{0} hl B9 F16 [Briefly highlights the tile at B9, then F16]";
