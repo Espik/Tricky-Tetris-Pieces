@@ -22,6 +22,8 @@ public struct Coord : IEquatable<Coord>
     public Coord(int width, int height, int x, int y) : this(width, height, x + width * y) { }
     public override string ToString() => $"({X}, {Y})/({Width}×{Height})";
 
+    public Coord Add(Coord c) => Add(c.X, c.Y);
+    public Coord Add(int dx, int dy) => new Coord(Width, Height, X + dx, Y + dy);
     public Coord AddXWrap(int dx) => new Coord(Width, Height, ((X + dx) % Width + Width) % Width, Y);
     public Coord AddYWrap(int dy) => new Coord(Width, Height, X, ((Y + dy) % Height + Height) % Height);
     public Coord AddWrap(int dx, int dy) => new Coord(Width, Height, ((X + dx) % Width + Width) % Width, ((Y + dy) % Height + Height) % Height);
